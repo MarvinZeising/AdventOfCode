@@ -1,0 +1,9 @@
+{
+  "name": "aoc1",
+  "version": "1.0.0",
+  "author": "Marvin Zeising",
+  "license": "MIT",
+  "scripts": {
+    "start": "deno run ./2021/index.ts"
+  }
+}
