@@ -1,12 +1,15 @@
-import depths from "./depths.ts";
-import exampleDepths from "./example-depths.ts";
-import getNumberOfIncreases from "./getNumberOfIncreases.ts";
-import toThreeMeasurementWindows from "./toThreeMeasurementWindows.ts";
+import { getCourseOutcomeDepth } from "./functions/getCourseOutcome.ts";
+import instructions from "./inputs/instructions.ts";
+import { getCourseOutcomePosition } from "./functions/getCourseOutcome.ts";
 
-const windowSums = toThreeMeasurementWindows(exampleDepths).map((ds) =>
-  ds.reduce((a, b) => a + b)
-);
+// const windowSums = toThreeMeasurementWindows(exampleDepths).map((ds) =>
+//   ds.reduce((a, b) => a + b)
+// );
 
-const result = getNumberOfIncreases(windowSums);
+// const result = getNumberOfIncreases(windowSums);
 
-console.log(result);
+const depth = getCourseOutcomeDepth(instructions);
+const position = getCourseOutcomePosition(instructions);
+
+console.log("depth: ", depth, " position: ", position);
+console.log(depth * position);
