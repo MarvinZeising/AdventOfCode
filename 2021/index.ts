@@ -1,7 +1,7 @@
-import { getCourseOutcome } from "./functions/getCourseOutcome.ts";
-import instructions from "./inputs/instructions.ts";
+import getDiagnosticRates from "./functions/getDiagnosticRates.ts";
+import diagnostics from "./inputs/diagnostics.ts";
 
-const { depth, position } = getCourseOutcome(instructions);
+const { gamma, epsilon } = getDiagnosticRates(diagnostics);
 
-console.log("depth: ", depth, " position: ", position);
-console.log(depth * position);
+console.log("gamma: ", gamma, " epsilon: ", epsilon);
+console.log(gamma * epsilon);
