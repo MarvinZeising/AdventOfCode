@@ -1,8 +1,6 @@
-import { getLifeSupportRates } from "./functions/getDiagnosticRates.ts";
-import diagnostics from "./inputs/diagnostics.ts";
+import { numbers, boards } from "./inputs/bingo.ts";
+import getBingoWinnerSum from "./functions/bingo.ts";
 
-const oxygen = getLifeSupportRates(diagnostics, "oxygen");
-const co2scrubber = getLifeSupportRates(diagnostics, "co2scrubber");
+const finalSum = getBingoWinnerSum(boards, numbers);
 
-console.log("oxygen: ", oxygen, " co2scrubber: ", co2scrubber);
-console.log(oxygen * co2scrubber);
+console.log(finalSum);
