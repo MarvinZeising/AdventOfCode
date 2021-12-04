@@ -26,7 +26,7 @@ const hasBingo = (board: BingoBoard, numbers: number[]): boolean => {
 };
 
 const getBoardSum = (board: BingoBoard, numbers: number[]): number => {
-  return board.reduce((sum, row) => {
+  const sum = board.reduce((sum, row) => {
     return (
       sum +
       row
@@ -34,16 +34,12 @@ const getBoardSum = (board: BingoBoard, numbers: number[]): number => {
         .reduce((sum, num) => sum + num, 0)
     );
   }, 0);
+
+  return sum * numbers[numbers.length - 1];
 };
 
-export default function getBingoWinnerSum(
-  boards: BingoBoard[],
-  numbers: number[]
-) {
-  if (!areBoardsValid(boards)) {
-    return 0;
-  }
-  console.log("Boards are valid!");
+export function getBingoWinnerSum(boards: BingoBoard[], numbers: number[]) {
+  if (!areBoardsValid(boards)) return 0;
 
   for (const index of numbers.keys()) {
     if (index > 0) {
@@ -53,13 +49,53 @@ export default function getBingoWinnerSum(
 
       for (const board of boards) {
         if (hasBingo(board, drawnNumbers)) {
-          const sum = getBoardSum(board, drawnNumbers);
-          const finalSum = sum * drawnNumber;
-          return finalSum;
+          return getBoardSum(board, drawnNumbers);
         }
       }
     }
   }
 
   return 0;
+}
+
+export function getBingoLooserSum(boards: BingoBoard[], numbers: number[]) {
+  if (!areBoardsValid(boards)) return 0;
+
+  type Result = {
+    boards: BingoBoard[];
+    finalSum: number;
+  };
+
+  const result = numbers.reduce(
+    (total: Result, _, index) => {
+      if (index > 0 && total.boards.length > 0) {
+        const drawnNumbers = numbers.slice(0, index);
+
+        if (total.boards.length > 1) {
+          return {
+            boards: total.boards.filter(
+              (board) => !hasBingo(board, drawnNumbers)
+            ),
+            finalSum: 0,
+          };
+        } else {
+          const isWinner = hasBingo(total.boards[0], drawnNumbers);
+          if (isWinner) {
+            return {
+              boards: [],
+              finalSum: getBoardSum(total.boards[0], drawnNumbers),
+            };
+          }
+        }
+      }
+
+      return total;
+    },
+    {
+      boards,
+      finalSum: 0,
+    }
+  );
+
+  return result.finalSum;
 }
