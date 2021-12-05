@@ -4,6 +4,6 @@
   "author": "Marvin Zeising",
   "license": "MIT",
   "scripts": {
-    "start": "deno run ./2021/index.ts"
+    "start": "deno run --allow-read --allow-write ./2021/index.ts"
   }
 }

@@ -1,3 +1,5 @@
+import { PNGImage } from "https://deno.land/x/dpng@0.7.5/lib/PNGImage.ts";
+
 type Grid = number[][];
 type GridLine = { x1: number; y1: number; x2: number; y2: number };
 
@@ -40,8 +42,6 @@ const generateGrid = (gridLines: GridLine[]): Grid => {
 };
 
 const drawLines = (grid: Grid, lines: GridLine[]): Grid => {
-  console.log("Drawing lines...", lines);
-
   return lines.reduce((total: Grid, line) => {
     for (
       let x = Math.min(line.x1, line.x2);
@@ -61,6 +61,24 @@ const drawLines = (grid: Grid, lines: GridLine[]): Grid => {
   }, grid);
 };
 
+const generateImage = (grid: Grid): PNGImage => {
+  const image = new PNGImage(grid[0].length, grid.length);
+  const white = image.createRGBColor({ r: 255, g: 255, b: 255, a: 1 });
+  const black = image.createRGBColor({ r: 0, g: 0, b: 0, a: 1 });
+
+  for (let y = 0; y < grid.length; y++) {
+    for (let x = 0; x < grid[y].length; x++) {
+      if (grid[y][x] > 0) {
+        image.setPixel(x, y, black);
+      } else {
+        image.setPixel(x, y, white);
+      }
+    }
+  }
+
+  return image;
+};
+
 export default function getNumberOfOverlappingLines(ventLines: string[]) {
   const gridLines = toGridLines(ventLines);
   const grid = generateGrid(gridLines);
@@ -68,6 +86,9 @@ export default function getNumberOfOverlappingLines(ventLines: string[]) {
   const numberOfOverlappingPoints = gridWithLines
     .map((l) => l.filter((p) => p > 1).length)
     .reduce((total, line) => total + line, 0);
+
+  const image = generateImage(gridWithLines);
+  Deno.writeFileSync("vents.png", image.getBuffer());
 
   return numberOfOverlappingPoints;
 }
