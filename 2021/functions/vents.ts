@@ -11,11 +11,7 @@ const toGridLines = (ventLines: string[]): GridLine[] => {
       .flat()
       .map((c) => parseInt(c, 10));
 
-    if (x1 === x2 || y1 === y2) {
-      return [...total, { x1, y1, x2, y2 }];
-    }
-
-    return total;
+    return [...total, { x1, y1, x2, y2 }];
   }, []);
 };
 
@@ -43,16 +39,30 @@ const generateGrid = (gridLines: GridLine[]): Grid => {
 
 const drawLines = (grid: Grid, lines: GridLine[]): Grid => {
   return lines.reduce((total: Grid, line) => {
-    for (
-      let x = Math.min(line.x1, line.x2);
-      x <= Math.max(line.x1, line.x2);
-      x++
-    ) {
+    if (line.x1 === line.x2 || line.y1 === line.y2) {
       for (
-        let y = Math.min(line.y1, line.y2);
-        y <= Math.max(line.y1, line.y2);
-        y++
+        let x = Math.min(line.x1, line.x2);
+        x <= Math.max(line.x1, line.x2);
+        x++
       ) {
+        for (
+          let y = Math.min(line.y1, line.y2);
+          y <= Math.max(line.y1, line.y2);
+          y++
+        ) {
+          total[y][x]++;
+        }
+      }
+    } else {
+      const slope = (line.y2 - line.y1) / (line.x2 - line.x1);
+      const b = line.y1 - slope * line.x1;
+
+      for (
+        let x = Math.min(line.x1, line.x2);
+        x <= Math.max(line.x1, line.x2);
+        x++
+      ) {
+        const y = slope * x + b;
         total[y][x]++;
       }
     }
