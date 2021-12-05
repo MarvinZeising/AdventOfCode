@@ -1,6 +1,6 @@
-import { numbers, boards } from "./inputs/bingo.ts";
-import { getBingoLooserSum } from "./functions/bingo.ts";
+import ventLines from "./inputs/vents.ts";
+import getNumberOfOverlappingLines from "./functions/vents.ts";
 
-const finalSum = getBingoLooserSum(boards, numbers);
+const count = getNumberOfOverlappingLines(ventLines);
 
-console.log(finalSum);
+console.log(count);
